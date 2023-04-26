@@ -8,5 +8,7 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <app-book *ngFor="let book of books" [book]="book"></app-book>
+  </ion-list>
 </ion-content>

@@ -11,4 +11,7 @@ export interface Book {
   price: number
   used: boolean
   damaged: boolean
+
+
 }
+
