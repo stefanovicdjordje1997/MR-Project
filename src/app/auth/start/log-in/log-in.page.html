@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-back-button slot="start" default-href="start"></ion-back-button>
+    <ion-title>Prijava</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-sm="8">
+        <ion-input label="Email" label-placement="floating" fill="outline" placeholder="Unesite vaš email" type="email"></ion-input>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-sm="8">
+        <ion-input label="Lozinka" label-placement="floating" fill="outline" placeholder="Unesite vašu lozinku" type="password"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center" style="margin-top: 10px">
+      <ion-col size-sm="8">
+        <ion-button fill="outline" expand="block" routerLink="/main">
+          Prijava
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

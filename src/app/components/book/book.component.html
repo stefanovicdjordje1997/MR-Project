@@ -6,7 +6,7 @@
   </ion-card-header>
 
   <ion-card-content>
-    <ion-label>{{book.price}} din</ion-label>
+    <ion-label><b>Cena:</b> {{book.price}} din</ion-label>
     <ion-grid>
      <ion-row>
        <ion-col>
@@ -28,7 +28,7 @@
      </ion-row>
     </ion-grid>
 
-
+<!--MORE INFO ABOUT THE BOOK WHEN THE CARD IS EXPANDED-->
     <div *ngIf="expand">
       <p style="margin-top: 15px"><ion-label *ngIf="book.used"><b>Polovno</b></ion-label></p>
       <p style="margin-top: 15px"><ion-label *ngIf="!book.used"><b>Novo</b></ion-label></p>
@@ -37,18 +37,28 @@
       <p style="margin-top: 15px"><b>Godina izdanja: </b> {{book.publicationYear}}</p>
       <p style="margin-top: 15px"><ion-label *ngIf="book.damaged"><b>Oštećen: </b>De</ion-label></p>
       <p style="margin-top: 15px"><ion-label *ngIf="!book.damaged"><b>Oštećen: </b>Ne</ion-label></p>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+            <ion-buttons class="ion-justify-content-center">
+              <ion-button *ngIf="expand" (click)="expand=!expand">
+                <ion-icon name="chevron-up-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+          <ion-col>
+            <ion-buttons class="ion-justify-content-end">
+              <ion-button fill="clear" size="large" *ngIf="expand">
+                <ion-icon name="star-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
 
-    <ion-buttons class="ion-justify-content-end">
-      <ion-button fill="clear" size="large" *ngIf="expand">
-        <ion-icon name="star-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
 
-    <ion-buttons class="ion-justify-content-center">
-      <ion-button *ngIf="expand" (click)="expand=!expand">
-        <ion-icon name="chevron-up-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-card-content>
 </ion-card>
