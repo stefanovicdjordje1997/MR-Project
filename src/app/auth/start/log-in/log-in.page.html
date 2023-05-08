@@ -6,25 +6,42 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size-sm="8">
-        <ion-input label="Email" label-placement="floating" fill="outline" placeholder="Unesite vaš email" type="email"></ion-input>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-grid>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size-sm="8">
-        <ion-input label="Lozinka" label-placement="floating" fill="outline" placeholder="Unesite vašu lozinku" type="password"></ion-input>
-      </ion-col>
-    </ion-row>
-    <ion-row class="ion-justify-content-center" style="margin-top: 10px">
-      <ion-col size-sm="8">
-        <ion-button fill="outline" expand="block" (click)="onLogin()">
-          Prijava
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <form [formGroup]="logInForm" (ngSubmit)="onLogin()">
+    <ion-grid>
+
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="8">
+          <ion-input label="Email" label-placement="floating" fill="outline" placeholder="Unesite vaš email" type="email" formControlName = "email"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="logInForm.get('email').invalid && logInForm.get('email').touched">
+        <ion-col style="padding: 0">
+          <p style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red" >Email adresa nije validna.</p>
+        </ion-col>
+      </ion-row>
+
+
+
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="8">
+          <ion-input label="Lozinka" label-placement="floating" fill="outline" placeholder="Unesite vašu lozinku" type="password" formControlName = "password"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="logInForm.get('password').invalid && logInForm.get('password').touched">
+        <ion-col style="padding: 0">
+          <p style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red" >Password mora sadržati najmanje 8 karaktera.</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center" style="margin-top: 10px">
+        <ion-col size-sm="8">
+          <ion-button type="submit" fill="outline" expand="block" [disabled]="logInForm.invalid">
+            Prijava
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
