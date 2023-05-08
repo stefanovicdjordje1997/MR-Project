@@ -22,8 +22,8 @@
           <ion-label>Moj profil</ion-label>
         </ion-item>
         <ion-menu-toggle>
-         <ion-item routerLink="start">
-            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+         <ion-item routerLink="start" (click)="onLogOut()">
+            <ion-icon name="log-out-outline" slot="start" ></ion-icon>
             <ion-label>Log out</ion-label>
           </ion-item>
         </ion-menu-toggle>

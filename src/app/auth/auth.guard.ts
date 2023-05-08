@@ -1,21 +1,18 @@
-import {inject, Injectable} from '@angular/core';
-import {CanLoad, Route, Router, UrlSegment, UrlTree} from '@angular/router';
-import { Observable } from 'rxjs';
+import {inject} from '@angular/core';
+import {Router} from '@angular/router';
 import {AuthService} from "./auth.service";
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard{
-  authService = inject(AuthService);
-  router = inject(Router);
-  canLoad(
-    route: Route,
-    segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+export const authGuard = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-    if(!this.authService.isUserAuthenticated){
-      this.router.navigateByUrl('/log-in')
-    }
-    return this.authService.isUserAuthenticated
+  if(authService.isUserAuthenticated) {
+    return true;
   }
+
+  if(!authService.isUserAuthenticated) {
+    router.navigateByUrl('/log-in');
+  }
+
+  return authService.isUserAuthenticated;
 }
