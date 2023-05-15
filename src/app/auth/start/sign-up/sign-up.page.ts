@@ -28,9 +28,9 @@ export class SignUpPage implements OnInit {
     subHeader: 'Izaberite fakultet'
   }
   //ARRAYS WITH THE VALUES FOR DROPDOWN MENUS
-  days = Array.from({length: 31}, (_, i) => i + 1);
-  months = Array.from({length: 12}, (_, i) => i + 1);
-  years = Array.from({length: 101}, (_, i) => i + 1930);
+  days = Array.from({length: 31}, (_, i) => i + 1)
+  months = Array.from({length: 12}, (_, i) => i + 1)
+  years = Array.from({length: 101}, (_, i) => i + 1930)
   faculties = ["Fakultet organizacionih nauka","Elektrotehnički fakultet"]
   constructor(private router: Router) { }
 

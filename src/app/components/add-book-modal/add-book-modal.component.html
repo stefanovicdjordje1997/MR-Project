@@ -1,0 +1,167 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Dodavanje udzbenika</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">Odustanite</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+
+  <form [formGroup]="addBookForm" (ngSubmit)="onAddBook()">
+    <ion-grid>
+
+      <!--      INSERT FACULTY-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-select label="Fakultet" label-placement="fixed" [interfaceOptions]="customActionSheetOptionsFaculty"
+                      interface="action-sheet" placeholder="Izaberite fakultet" formControlName="faculty">
+            <ion-select-option *ngFor="let faculty of faculties" [value]="faculty">{{faculty}}</ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p
+            *ngIf="addBookForm.get('faculty').invalid && addBookForm.get('faculty').touched"
+            style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red">Odabir fakulteta je obavezan.</p>
+        </ion-col>
+      </ion-row>
+
+      <!--      INSERT FIELD OF STUDY-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-select label="Smer" label-placement="fixed" [interfaceOptions]="customActionSheetOptionsFieldOfStudy"
+                      interface="action-sheet" placeholder="Izaberite smer" formControlName="fieldOfStudy">
+            <ion-select-option *ngFor="let fieldOfStudy of fieldOfStudyByFaculty[addBookForm.get('faculty').value]"
+                               [value]="fieldOfStudy">{{fieldOfStudy}}</ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p
+            *ngIf="addBookForm.get('fieldOfStudy').invalid && addBookForm.get('fieldOfStudy').touched"
+            style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red">Odabir smera je obavezan.</p>
+        </ion-col>
+      </ion-row>
+
+      <!--      INSERT BOOK NAME-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-input label="Naziv udžbenika" label-placement="floating" fill="outline"
+                     placeholder="Unesite naziv udžbenika" formControlName="name"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p
+            *ngIf="addBookForm.get('name').invalid && addBookForm.get('name').touched"
+            style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red">Naziv udžbenika je obavezno
+            polje.</p>
+        </ion-col>
+      </ion-row>
+
+<!--      INSERT PICTURE URL-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-input label="Link do fotografije" label-placement="floating" fill="outline"
+                     placeholder="Unesite link do fotografije" formControlName="imageUrl"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <!--      INSERT YEAR OF STUDY-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-select label="Godina studija" label-placement="fixed"
+                      [interfaceOptions]="customActionSheetOptionsYearOfStudy" interface="action-sheet"
+                      placeholder="Izaberite godinu studija" formControlName="yearOfStudy">
+            <ion-select-option *ngFor="let yearOfStudy of yearsOfStudyByFaculty[addBookForm.get('faculty').value]"
+                               [value]="yearOfStudy">{{yearOfStudy}}</ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p
+            *ngIf="addBookForm.get('yearOfStudy').invalid && addBookForm.get('yearOfStudy').touched"
+            style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red">Odabir godine studija je
+            obavezan.</p>
+        </ion-col>
+      </ion-row>
+
+      <!--      INSERT YEAR OF STUDY-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-select label="Godina izdanja" label-placement="fixed"
+                      [interfaceOptions]="customActionSheetOptionsPublicationYear" interface="action-sheet"
+                      placeholder="Izaberite godinu izdanja" formControlName="publicationYear">
+            <ion-select-option *ngFor="let publicationYear of publicationYears"
+                               [value]="publicationYear">{{publicationYear}}</ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p
+            *ngIf="addBookForm.get('publicationYear').invalid && addBookForm.get('publicationYear').touched"
+            style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red">Odabir godine izdanja je
+            obavezan.</p>
+        </ion-col>
+      </ion-row>
+
+      <!--      INSERT PRICE-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-input label="Cena u dinarima" label-placement="floating" fill="outline"
+                     placeholder="Unesite cenu u dinarima" formControlName="price"></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p
+            *ngIf="addBookForm.get('price').errors?.['required'] && addBookForm.get('price').touched"
+            style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red" >Cena udžbenika je obavezno polje.</p>
+          <p
+            *ngIf="addBookForm.get('price').errors?.['pattern'] && addBookForm.get('price').touched"
+            style="margin-top: 0; font-size: x-small; margin-left: 10px; color: red" >Cena udžbenika mora sadržati samo cifre.</p>
+        </ion-col>
+      </ion-row>
+
+<!--    INSERT USED AND DAMAGED-->
+        <ion-row>
+          <ion-col size-sm="3" offset-sm="3">
+            <p>Korišćena:</p>
+            <ion-radio-group formControlName="used">
+              <ion-radio value="Yes">Da</ion-radio><br />
+              <ion-radio value="No">Ne</ion-radio><br />
+            </ion-radio-group>
+          </ion-col>
+          <ion-col size-sm="3" *ngIf="addBookForm.get('used').value==='Yes'">
+            <p>Oštećena:</p>
+            <ion-radio-group formControlName="damaged">
+              <ion-radio value="Yes">Da</ion-radio><br />
+              <ion-radio value="No">Ne</ion-radio><br />
+            </ion-radio-group>
+          </ion-col>
+        </ion-row>
+
+<!--      SUBMIT BUTTON-->
+      <ion-row style="margin-top: 10px">
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-button type="submit" fill="solid" expand="block" [disabled]="addBookForm.invalid">
+            Dodaj udžbenik
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>
+

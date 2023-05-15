@@ -22,7 +22,7 @@ const routes: Routes = [
       {
         path: 'my-books',
         loadChildren: () => import('./my-books/my-books.module').then(m => m.MyBooksPageModule),
-        canActivate: [authGuard]
+        //canActivate: [authGuard]
       },
       {
         path: '',
