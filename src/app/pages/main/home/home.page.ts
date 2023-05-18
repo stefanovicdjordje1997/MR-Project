@@ -11,10 +11,16 @@ export class HomePage implements OnInit {
   books: Book[]
 
   constructor(private bookService: BooksService) {
-    this.books = this.bookService.books;
+    //this.books = this.bookService.books;
   }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter(){
+    this.bookService.getBooks().subscribe((books)=>{
+      this.books = books
+    })
   }
 
 }

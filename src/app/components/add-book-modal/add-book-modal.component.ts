@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActionSheetController, ModalController} from "@ionic/angular";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BooksService} from "../../services/books.service";
-import {Book} from "../../book.model";
+
 
 @Component({
   selector: 'app-add-book-modal',
@@ -58,7 +58,7 @@ export class AddBookModalComponent implements OnInit {
       price: new FormControl('', [Validators.required, Validators.pattern("[0-9]*$")]),
       used: new FormControl('', Validators.required),
       damaged: new FormControl('', Validators.required),
-      imageUrl: new FormControl('https://drive.google.com/uc?id=1MDbzggTZ4uik1X5Wsukaaek_3kv-hWAb&export=download')
+      imageUrl: new FormControl('')
     })
 
     this.addBookForm.get('faculty').valueChanges.subscribe(() => {
@@ -77,12 +77,12 @@ export class AddBookModalComponent implements OnInit {
   }
 
   onCancel() {
-      this.modalCtrl.dismiss()
+    this.modalCtrl.dismiss()
   }
 
+
   onAddBook() {
-    this.bookService.books.push( new Book(
-      'b',
+    this.bookService.addBook(
       this.addBookForm.get('imageUrl').value,
       this.addBookForm.get('name').value,
       this.addBookForm.get('faculty').value,
@@ -92,7 +92,9 @@ export class AddBookModalComponent implements OnInit {
       this.addBookForm.get('price').value,
       this.addBookForm.get('used').value != 'No',
       this.addBookForm.get('damaged').value != 'No'
-    ))
+    ).subscribe((id)=>{
+      console.log(id)
+    })
     this.onCancel()
   }
 }

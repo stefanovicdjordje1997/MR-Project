@@ -1,5 +1,5 @@
 <ion-card>
-  <img alt="Silhouette of mountains" [src]="book.imageUrl"/>
+  <img alt="Greška pri učitavanju fotografije" [src]="book.imageUrl" (error)="book.imageUrl='https://drive.google.com/uc?id=1MDbzggTZ4uik1X5Wsukaaek_3kv-hWAb&export=download'"/>
   <ion-card-header>
     <ion-card-title>{{book.name}}</ion-card-title>
     <ion-card-subtitle>{{book.yearOfStudy}}. godina</ion-card-subtitle>
