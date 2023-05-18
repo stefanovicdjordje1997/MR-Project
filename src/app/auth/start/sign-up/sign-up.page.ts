@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {AuthService} from "../../auth.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -32,7 +33,7 @@ export class SignUpPage implements OnInit {
   months = Array.from({length: 12}, (_, i) => i + 1)
   years = Array.from({length: 101}, (_, i) => i + 1930)
   faculties = ["Fakultet organizacionih nauka","Elektrotehnički fakultet"]
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.signUpForm = new FormGroup({
@@ -64,6 +65,17 @@ export class SignUpPage implements OnInit {
   }
 
   onRegister() {
+    this.authService.register({
+      name: this.signUpForm.value.name,
+      surname: this.signUpForm.value.surname,
+      birthDate: new Date(this.signUpForm.value.year, this.signUpForm.value.month - 1, this.signUpForm.value.day),
+      faculty: this.signUpForm.value.faculty,
+      phoneNumber: this.signUpForm.value.phoneNumber,
+      email: this.signUpForm.value.email,
+      password: this.signUpForm.value.password
+    }).subscribe((user)=>{
+
+    })
     this.router.navigateByUrl('/main')
   }
 }
