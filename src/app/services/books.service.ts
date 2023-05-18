@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Book} from "../book.model";
 import {HttpClient} from "@angular/common/http";
-import {map, switchMap} from "rxjs";
+import {BehaviorSubject, map, switchMap, take, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksService {
-  books: Book[] = [];
-  _books: Book[] = [{
+  private _books = new BehaviorSubject<Book[]>([])
+
+  oldBooks: Book[] = [{
     id: 'b1',
     name: 'Matematika 3',
     faculty: 'Fakultet organizacionih nauka',
@@ -46,6 +47,10 @@ export class BooksService {
   constructor(private http: HttpClient) {
   }
 
+  get books() {
+    return this._books.asObservable()
+  }
+
   addBook(imageUrl: string,
           name: string,
           faculty: string,
@@ -55,6 +60,7 @@ export class BooksService {
           price: number,
           used: boolean,
           damaged: boolean) {
+    let _id
     return this.http.post<{ id: string }>('https://book-app-db-default-rtdb.europe-west1.firebasedatabase.app/books.json', {
       imageUrl,
       name,
@@ -65,7 +71,23 @@ export class BooksService {
       price,
       used,
       damaged
-    })
+    }).pipe(switchMap((bookFromDb) => {
+      _id = bookFromDb.id
+      return this.books
+    }), take(1), tap((books) => {
+      this._books.next(books.concat({
+        id: _id,
+        imageUrl,
+        name,
+        faculty,
+        fieldOfStudy,
+        yearOfStudy,
+        publicationYear,
+        price,
+        used,
+        damaged
+      }))
+    }))
   }
 
   getBooks() {
@@ -88,6 +110,8 @@ export class BooksService {
         }
       }
       return books
+    }), tap(books => {
+      this._books.next(books)
     }))
 
   }
