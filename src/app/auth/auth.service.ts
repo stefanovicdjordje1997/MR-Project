@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {map, tap} from "rxjs";
 import {User} from "./user.model";
+import {UserService} from "../services/user.service";
 
 interface AuthResponse {
   idToken: string,
@@ -30,17 +31,32 @@ export class AuthService {
 
   private _isUserAuthenticated = false
   private user: User
-  public users: User[]
 
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient, private userService: UserService) {
   }
 
   get isUserAuthenticated(): boolean {
     return this._isUserAuthenticated
   }
 
-  logIn() {
+  logIn(user: UserData) {
     this._isUserAuthenticated = true
+    this.http.post<AuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.APIKey}`, {
+      email: user.email,
+      password: user.password,
+      returnSecureToken: true
+    }).pipe(tap((userData) => {
+      const users = this.userService.users;
+      this.user = users.find((u) => u.id === userData.localId)
+      const expirationTime = new Date(new Date().getTime() + +userData.expiresIn * 1000)
+      if (this.user) {
+        this.user._token = userData.idToken;
+        this.user.tokenExpirationDate = expirationTime;
+      }
+
+    })).subscribe()
+    console.log(this.user)
   }
 
   logOut() {
@@ -49,28 +65,38 @@ export class AuthService {
 
 
   register(user: UserData) {
-   return this.http.post<AuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.APIKey}`, {
+    return this.http.post<AuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.APIKey}`, {
       email: user.email,
       password: user.password,
       returnSecureToken: true
-    }).pipe(map((userData)=>{
-     const expirationTime = new Date(
-       new Date().getTime() + +userData.expiresIn * 1000
-     );
-     this.user = new User(
-       userData.localId,
-       userData.idToken,
-       expirationTime,
-       user.name,
-       user.surname,
-       user.birthDate,
-       user.faculty,
-       user.phoneNumber,
-       userData.email,
-     )
-     return this.user
-
-   }))
+    }).pipe(map((userData) => {
+      const expirationTime = new Date(
+        new Date().getTime() + +userData.expiresIn * 1000
+      );
+      this.user = new User(
+        userData.localId,
+        userData.idToken,
+        expirationTime,
+        user.name,
+        user.surname,
+        user.birthDate,
+        user.faculty,
+        user.phoneNumber,
+        userData.email,
+      )
+      return this.user
+    })).subscribe((user) => {
+      this.userService.addUser(
+        user.id,
+        user.name,
+        user.surname,
+        user.birthDate,
+        user.faculty,
+        user.phoneNumber,
+        user.email
+      )
+      console.log(user)
+    })
   }
 
 

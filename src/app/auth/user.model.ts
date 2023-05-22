@@ -1,14 +1,14 @@
 export class User {
   constructor(
-    private id: string,
-    private _token: string,
-    private tokenExpirationDate: Date,
-    private name: string,
-    private surname: string,
-    private birthDate: Date,
-    private faculty: string,
-    private phoneNumber: string,
-    private email: string
+    public id: string,
+    public _token: string,
+    public tokenExpirationDate: Date,
+    public name: string,
+    public surname: string,
+    public birthDate: Date,
+    public faculty: string,
+    public phoneNumber: string,
+    public email: string
   ) {
   }
   get token() {

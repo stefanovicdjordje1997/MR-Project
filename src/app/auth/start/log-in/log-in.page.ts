@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../auth.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-log-in',
@@ -11,7 +12,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class LogInPage implements OnInit {
   logInForm: FormGroup
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
     this.logInForm = new FormGroup({
@@ -19,9 +20,13 @@ export class LogInPage implements OnInit {
       password: new FormControl('',[Validators.required, Validators.minLength(8)])
     })
   }
+  ionViewWillEnter(){
+    this.userService.getUsers()
+    console.log(this.userService.users)
+  }
 
   onLogin() {
-    this.authService.logIn()
+    this.authService.logIn(this.logInForm.value)
     this.router.navigateByUrl('/main')
   }
 }
