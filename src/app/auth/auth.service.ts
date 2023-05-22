@@ -30,7 +30,7 @@ export class AuthService {
 
 
   private _isUserAuthenticated = false
-  private user: User
+  user: User
 
 
   constructor(private http: HttpClient, private userService: UserService) {
@@ -47,16 +47,17 @@ export class AuthService {
       password: user.password,
       returnSecureToken: true
     }).pipe(tap((userData) => {
-      const users = this.userService.users;
-      this.user = users.find((u) => u.id === userData.localId)
-      const expirationTime = new Date(new Date().getTime() + +userData.expiresIn * 1000)
-      if (this.user) {
-        this.user._token = userData.idToken;
-        this.user.tokenExpirationDate = expirationTime;
-      }
+      this.userService.getUsers().subscribe((users)=>{
 
+        this.user = users.find((u) => u.id === userData.localId)
+        const expirationTime = new Date(new Date().getTime() + +userData.expiresIn * 1000)
+        if (this.user) {
+          this.user._token = userData.idToken;
+          this.user.tokenExpirationDate = expirationTime;
+        }
+        console.log(this.user.name)
+      })
     })).subscribe()
-    console.log(this.user)
   }
 
   logOut() {

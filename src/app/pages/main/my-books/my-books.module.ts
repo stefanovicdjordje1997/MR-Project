@@ -8,6 +8,7 @@ import { MyBooksPageRoutingModule } from './my-books-routing.module';
 
 import { MyBooksPage } from './my-books.page';
 import {AddBookModalComponent} from "../../../components/add-book-modal/add-book-modal.component";
+import {StartPageModule} from "../../../auth/start/start.module";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {AddBookModalComponent} from "../../../components/add-book-modal/add-book
     FormsModule,
     IonicModule,
     MyBooksPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StartPageModule
   ],
   declarations: [MyBooksPage,AddBookModalComponent]
 })

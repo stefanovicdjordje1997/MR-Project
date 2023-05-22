@@ -3,6 +3,7 @@ import {AuthService} from "../../auth.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user.service";
+import {User} from "../../user.model";
 
 @Component({
   selector: 'app-log-in',
@@ -11,6 +12,7 @@ import {UserService} from "../../../services/user.service";
 })
 export class LogInPage implements OnInit {
   logInForm: FormGroup
+  users: User[]
 
   constructor(private authService: AuthService, private router: Router, private userService: UserService) { }
 
@@ -21,8 +23,7 @@ export class LogInPage implements OnInit {
     })
   }
   ionViewWillEnter(){
-    this.userService.getUsers()
-    console.log(this.userService.users)
+    this.userService.getUsers().subscribe()
   }
 
   onLogin() {

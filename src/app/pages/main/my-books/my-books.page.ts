@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActionSheetController, ModalController} from "@ionic/angular";
 import {AddBookModalComponent} from "../../../components/add-book-modal/add-book-modal.component";
+import {AuthService} from "../../../auth/auth.service";
+import {Book} from "../../../book.model";
+import {Subscription} from "rxjs";
+import {BooksService} from "../../../services/books.service";
 
 @Component({
   selector: 'app-my-books',
@@ -8,11 +12,14 @@ import {AddBookModalComponent} from "../../../components/add-book-modal/add-book
   styleUrls: ['./my-books.page.scss'],
 })
 export class MyBooksPage implements OnInit {
+  books: Book[]
+  private subscription: Subscription
 
-  constructor(private modalCtrl: ModalController, private actionSheetCtrl: ActionSheetController) {
+  constructor(private modalCtrl: ModalController, private actionSheetCtrl: ActionSheetController, private authService: AuthService, private bookService: BooksService) {
   }
 
   ngOnInit() {
+
   }
 
   openAddForm() {
@@ -44,8 +51,23 @@ export class MyBooksPage implements OnInit {
 
     })
   }
-  closeAddForm(){
-    this.modalCtrl.dismiss();
+
+  ionViewWillEnter() {
+    this.books = []
+    this.bookService.getBooks().subscribe()
+    this.bookService.books.subscribe((books) => {
+      for(let id in books){
+        if(books[id].userId == this.authService.user.id){
+          this.books.push(books[id])
+        }
+      }
+    })
+  }
+
+  ionViewWillDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
   }
 
 }

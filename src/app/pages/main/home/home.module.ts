@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
-import {BookComponent} from "../../../components/book/book.component";
+
+import {StartPageModule} from "../../../auth/start/start.module";
 
 
 @NgModule({
@@ -15,8 +16,9 @@ import {BookComponent} from "../../../components/book/book.component";
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    StartPageModule
   ],
-  declarations: [HomePage, BookComponent]
+  declarations: [HomePage]
 })
 export class HomePageModule {}

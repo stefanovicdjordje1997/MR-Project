@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActionSheetController, ModalController} from "@ionic/angular";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BooksService} from "../../services/books.service";
+import {AuthService} from "../../auth/auth.service";
 
 
 @Component({
@@ -45,7 +46,7 @@ export class AddBookModalComponent implements OnInit {
   }
 
 
-  constructor(private modalCtrl: ModalController,private actionSheetCtrl: ActionSheetController, private bookService: BooksService) {
+  constructor(private modalCtrl: ModalController,private actionSheetCtrl: ActionSheetController, private bookService: BooksService, private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -84,6 +85,7 @@ export class AddBookModalComponent implements OnInit {
   onAddBook() {
     this.bookService.addBook(
       this.addBookForm.get('imageUrl').value,
+      this.authService.user.id,
       this.addBookForm.get('name').value,
       this.addBookForm.get('faculty').value,
       this.addBookForm.get('fieldOfStudy').value,

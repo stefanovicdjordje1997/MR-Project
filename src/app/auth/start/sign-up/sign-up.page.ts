@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth.service";
-import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -34,7 +33,7 @@ export class SignUpPage implements OnInit {
   months = Array.from({length: 12}, (_, i) => i + 1)
   years = Array.from({length: 101}, (_, i) => i + 1930)
   faculties = ["Fakultet organizacionih nauka","Elektrotehnički fakultet"]
-  constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.signUpForm = new FormGroup({
@@ -64,9 +63,7 @@ export class SignUpPage implements OnInit {
       return isValid ? null : { equalTo: { value: targetValue } }
     }
   }
-   ionViewWillLeave(){
-    this.userService.getUsers()
-   }
+
   onRegister() {
     this.authService.register({
       name: this.signUpForm.value.name,
