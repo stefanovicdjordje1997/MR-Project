@@ -1,30 +1,32 @@
-import {Component, OnInit} from '@angular/core';
-import {ActionSheetController, ModalController} from "@ionic/angular";
-import {AddBookModalComponent} from "../../../components/add-book-modal/add-book-modal.component";
-import {AuthService} from "../../../auth/auth.service";
-import {Book} from "../../../book.model";
-import {Subscription} from "rxjs";
-import {BooksService} from "../../../services/books.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActionSheetController, ModalController } from '@ionic/angular';
+import { AddBookModalComponent } from '../../../components/add-book-modal/add-book-modal.component';
+import { AuthService } from '../../../auth/auth.service';
+import { Book } from '../../../book.model';
+import { Subscription } from 'rxjs';
+import { BooksService } from '../../../services/books.service';
 
 @Component({
   selector: 'app-my-books',
   templateUrl: './my-books.page.html',
   styleUrls: ['./my-books.page.scss'],
 })
-export class MyBooksPage implements OnInit {
-  books: Book[]
-  private subscription: Subscription
+export class MyBooksPage implements OnInit, OnDestroy {
+  books: Book[];
+  private subscription: Subscription;
 
-  constructor(private modalCtrl: ModalController, private actionSheetCtrl: ActionSheetController, private authService: AuthService, private bookService: BooksService) {
-  }
+  constructor(
+    private modalCtrl: ModalController,
+    private actionSheetCtrl: ActionSheetController,
+    private authService: AuthService,
+    private bookService: BooksService
+  ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   openAddForm() {
     this.modalCtrl.create({
-      component: AddBookModalComponent
+      component: AddBookModalComponent,
     }).then((modal) => {
       modal.canDismiss = async () => {
         const actionSheet = await this.actionSheetCtrl.create({
@@ -43,31 +45,32 @@ export class MyBooksPage implements OnInit {
 
         await actionSheet.present();
 
-        const {role} = await actionSheet.onWillDismiss();
+        const { role } = await actionSheet.onWillDismiss();
 
         return role === 'confirm';
       };
-      modal.present()
-
-    })
+      modal.present();
+    });
   }
 
   ionViewWillEnter() {
-    this.books = []
-    this.bookService.getBooks().subscribe()
-    this.bookService.books.subscribe((books) => {
-      for(let id in books){
-        if(books[id].userId == this.authService.user.id){
-          this.books.push(books[id])
+    //this.bookService.getBooks().subscribe();
+    this.subscription = this.bookService.books.subscribe((books) => {
+      const userId = this.authService.user ? this.authService.user.id : null;
+      if (userId) {
+        this.books = [];
+        for (const id in books) {
+          if (books[id].userId === userId) {
+            this.books.push(books[id]);
+          }
         }
       }
-    })
+    });
   }
 
-  ionViewWillDestroy() {
+  ngOnDestroy() {
     if (this.subscription) {
-      this.subscription.unsubscribe()
+      this.subscription.unsubscribe();
     }
   }
-
 }

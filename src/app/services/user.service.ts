@@ -13,10 +13,6 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  get users() {
-    return this._users
-  }
-
   addUser(
     id: string,
     name: string,
