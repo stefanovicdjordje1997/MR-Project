@@ -34,7 +34,11 @@ export class AuthService {
   constructor(private http: HttpClient, private userService: UserService) {}
 
   get isUserAuthenticated(): boolean {
-    return this._isUserAuthenticated;
+    if (this.user) {
+      return !!this.user.token;
+    } else {
+      return false;
+    }
   }
 
   get user(): User {
