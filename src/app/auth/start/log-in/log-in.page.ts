@@ -38,13 +38,6 @@ export class LogInPage implements OnInit {
             error: async () => {
               let message = 'Email ili lozinka neispravni.';
 
-              // const code = errRes.error.error.message;
-              // if (code === 'EMAIL_NOT_FOUND') {
-              //     message = 'Email address could not be found.';
-              // } else if (code === 'INVALID_PASSWORD') {
-              //     message = 'This password is not correct.';
-              // }
-
               const alert = await this.alertCtrl.create(
                 {
                   header: 'Greška!',

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { map, tap } from 'rxjs/operators';
-import { User } from './user.model';
-import { UserService } from '../services/user.service';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {map, tap} from 'rxjs/operators';
+import {User} from './user.model';
+import {UserService} from '../services/user.service';
+import {BehaviorSubject} from 'rxjs';
 
 interface AuthResponse {
   idToken: string;
@@ -31,14 +31,17 @@ export class AuthService {
   private _isUserAuthenticated = false;
   private _user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(private http: HttpClient, private userService: UserService) {
+  }
 
-  get isUserAuthenticated(): boolean {
-    if (this.user) {
-      return !!this.user.token;
-    } else {
-      return false;
-    }
+  get isUserAuthenticated() {
+    return this._user.asObservable().pipe(map((user) => {
+      if(user){
+        return !!this.user.token
+      }else{
+        return false
+      }
+    }))
   }
 
   get user(): User {
@@ -46,7 +49,6 @@ export class AuthService {
   }
 
   logIn(user: UserData) {
-    this._isUserAuthenticated = true;
     return this.http
       .post<AuthResponse>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.APIKey}`,
@@ -66,18 +68,30 @@ export class AuthService {
               new Date().getTime() + +userData.expiresIn * 1000
             );
             if (this.user) {
-              this.user._token = userData.idToken;
-              this.user.tokenExpirationDate = expirationTime;
+              const newUser = new User(
+                this.user.id,
+                userData.idToken,
+                expirationTime,
+                this.user.name,
+                this.user.surname,
+                this.user.birthDate,
+                this.user.faculty,
+                this.user.phoneNumber,
+                this.user.email
+              );
+              this._user.next(newUser);
             }
-            console.log(this.user?.name);
+            console.log(this.user?.name + ' logged in.');
+            this._isUserAuthenticated = true
           });
         })
-      )
+      );
   }
+
 
   logOut() {
     this._isUserAuthenticated = false;
-    this._user.next(null);
+    this._user.next(null)
   }
 
   register(user: UserData) {
