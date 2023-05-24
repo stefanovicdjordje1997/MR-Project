@@ -19,7 +19,7 @@
          </ion-buttons>
        </ion-col>
        <ion-col>
-         <ion-buttons class="ion-justify-content-end">
+         <ion-buttons id="favorites" class="ion-justify-content-end">
            <ion-button fill="clear" size="large" *ngIf="!expand">
              <ion-icon name="star-outline"></ion-icon>
            </ion-button>
@@ -49,16 +49,18 @@
             </ion-buttons>
           </ion-col>
           <ion-col>
-            <ion-buttons class="ion-justify-content-end">
-              <ion-button fill="clear" size="large" *ngIf="expand">
+            <ion-buttons id="_favorites" class="ion-justify-content-end">
+              <ion-button  fill="clear" size="large" *ngIf="expand">
                 <ion-icon name="star-outline"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-toast trigger="_favorites" message="Udzbenik {{book.name}} dodat u omiljeno" [duration]="3000"></ion-toast>
     </div>
 
+    <ion-toast trigger="favorites" message="Udzbenik {{book.name}} dodat u omiljeno" [duration]="3000"></ion-toast>
 
   </ion-card-content>
 </ion-card>

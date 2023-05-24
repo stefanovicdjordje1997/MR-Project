@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-back-button slot="start" defaultHref="home"></ion-back-button>
+    <ion-title>Moj profil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size-sm="3" offset-sm="3">
+        <ion-input label="Ime" label-placement="floating" fill="outline" value="{{name}}" disabled="true"></ion-input>
+      </ion-col>
+      <ion-col size-sm="3">
+        <ion-input label="Prezime" label-placement="floating" fill="outline" value="{{surname}}"
+                   disabled="true"></ion-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3">
+        <ion-label style="opacity: 0.4">
+          Datum rođenja:
+        </ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="2" offset-sm="3">
+        <ion-item>
+          <ion-select interface="action-sheet" placeholder="Dan" value="1" disabled="true">
+            <ion-select-option value="1">{{day}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size-sm="2">
+        <ion-item>
+          <ion-select interface="action-sheet" placeholder="Mesec" value="1" disabled="true">
+            <ion-select-option value="1">{{month}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size-sm="2">
+        <ion-item>
+          <ion-select interface="action-sheet" placeholder="Godina" value="1" disabled="true">
+            <ion-select-option value="1">{{year}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3">
+        <ion-select label="Fakultet" label-placement="fixed" interface="action-sheet" value="1" disabled="true">
+          <ion-select-option value="1">{{faculty}}</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3">
+        <ion-input label="Broj Telefona" label-placement="floating" fill="outline" type="tel" value="{{phoneNumber}}"
+                   disabled="true"></ion-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3" class="ion-margin-top">
+        <ion-input label="Email" label-placement="floating" fill="outline" value="{{email}}"
+                   disabled="true"></ion-input>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
