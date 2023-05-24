@@ -9,6 +9,6 @@
 
 <ion-content>
   <ion-list>
-    <app-book *ngFor="let book of books" [book]="book"></app-book>
+    <app-book *ngFor="let book of books" [book]="book" (addToFavorites)="showToast($event)"></app-book>
   </ion-list>
 </ion-content>

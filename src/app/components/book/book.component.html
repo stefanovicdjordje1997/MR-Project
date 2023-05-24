@@ -1,5 +1,11 @@
 <ion-card>
-  <img alt="Greška pri učitavanju fotografije" [src]="book.imageUrl" (error)="book.imageUrl='https://drive.google.com/uc?id=1MDbzggTZ4uik1X5Wsukaaek_3kv-hWAb&export=download'"/>
+  <img alt="Greška pri učitavanju fotografije" [src]="book.imageUrl" (error)="book.imageUrl='https://drive.google.com/uc?id=1MDbzggTZ4uik1X5Wsukaaek_3kv-hWAb&export=download'" />
+
+  <ion-item lines="none">
+    <ion-icon name="person-circle-outline" size="large"></ion-icon>
+    <ion-label style="font-size: large" (click)="showUserInfo()">{{user?.name}}</ion-label>
+  </ion-item>
+
   <ion-card-header>
     <ion-card-title>{{book.name}}</ion-card-title>
     <ion-card-subtitle>{{book.yearOfStudy}}. godina</ion-card-subtitle>
@@ -8,27 +14,26 @@
   <ion-card-content>
     <ion-label><b>Cena:</b> {{book.price}} din</ion-label>
     <ion-grid>
-     <ion-row>
-       <ion-col>
-       </ion-col>
-       <ion-col>
-         <ion-buttons class="ion-justify-content-center">
-           <ion-button *ngIf="!expand" (click)="expand=!expand">
-             <ion-icon name="chevron-down-outline"></ion-icon>
-           </ion-button>
-         </ion-buttons>
-       </ion-col>
-       <ion-col>
-         <ion-buttons id="favorites" class="ion-justify-content-end">
-           <ion-button fill="clear" size="large" *ngIf="!expand">
-             <ion-icon name="star-outline"></ion-icon>
-           </ion-button>
-         </ion-buttons>
-       </ion-col>
-     </ion-row>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-buttons class="ion-justify-content-center">
+            <ion-button *ngIf="!expand" (click)="expand = !expand">
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col>
+          <ion-buttons class="ion-justify-content-end">
+            <ion-button fill="clear" size="large" *ngIf="!expand" (click)="addToFavoritesClicked()">
+              <ion-icon name="star-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
     </ion-grid>
 
-<!--MORE INFO ABOUT THE BOOK WHEN THE CARD IS EXPANDED-->
+    <!-- MORE INFO ABOUT THE BOOK WHEN THE CARD IS EXPANDED -->
     <div *ngIf="expand">
       <p style="margin-top: 15px"><ion-label *ngIf="book.used"><b>Polovno</b></ion-label></p>
       <p style="margin-top: 15px"><ion-label *ngIf="!book.used"><b>Novo</b></ion-label></p>
@@ -39,28 +44,26 @@
       <p style="margin-top: 15px"><ion-label *ngIf="!book.damaged"><b>Oštećen: </b>Ne</ion-label></p>
       <ion-grid>
         <ion-row>
-          <ion-col>
-          </ion-col>
+          <ion-col></ion-col>
           <ion-col>
             <ion-buttons class="ion-justify-content-center">
-              <ion-button *ngIf="expand" (click)="expand=!expand">
+              <ion-button *ngIf="expand" (click)="expand = !expand">
                 <ion-icon name="chevron-up-outline"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-col>
           <ion-col>
-            <ion-buttons id="_favorites" class="ion-justify-content-end">
-              <ion-button  fill="clear" size="large" *ngIf="expand">
+            <ion-buttons class="ion-justify-content-end">
+              <ion-button fill="clear" size="large" *ngIf="expand" (click)="addToFavoritesClicked()">
                 <ion-icon name="star-outline"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-toast trigger="_favorites" message="Udzbenik {{book.name}} dodat u omiljeno" [duration]="3000"></ion-toast>
     </div>
 
-    <ion-toast trigger="favorites" message="Udzbenik {{book.name}} dodat u omiljeno" [duration]="3000"></ion-toast>
-
+    <!-- Toast Messages -->
+    <ion-toast message="Udzbenik {{book.name}} dodat u omiljeno" [duration]="3000"></ion-toast>
   </ion-card-content>
 </ion-card>

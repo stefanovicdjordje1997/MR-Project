@@ -8,7 +8,7 @@ import {BehaviorSubject, map, tap} from "rxjs";
 })
 export class UserService {
 
-  private _users = new BehaviorSubject<User[]>([])
+  public _users = new BehaviorSubject<User[]>([])
 
   constructor(private http: HttpClient) {
   }

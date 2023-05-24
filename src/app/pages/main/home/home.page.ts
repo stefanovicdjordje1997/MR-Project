@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Book} from "../../../book.model";
 import {BooksService} from "../../../services/books.service";
 import {Subscription} from "rxjs";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,15 @@ export class HomePage implements OnInit {
   books: Book[]
   private subscription: Subscription
 
-  constructor(private bookService: BooksService) {
+
+  async showToast(bookName: string) {
+    const toast = await this.toastController.create({
+      message: `Udzbenik ${bookName} dodat u omiljeno`,
+      duration: 3000
+    });
+    await toast.present();
+  }
+  constructor(private bookService: BooksService,private toastController: ToastController) {
   }
 
   ngOnInit() {

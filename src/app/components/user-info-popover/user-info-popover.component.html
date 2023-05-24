@@ -1,0 +1,30 @@
+<style>
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    overflow: hidden;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+</style>
+
+<div class="card">
+  <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="Avatar">
+  <div class="container">
+    <h4><b>{{user?.name}} {{user?.surname}}</b></h4>
+    <p>{{user?.faculty}}</p>
+    <p>{{user?.email}}</p>
+    <p>{{user?.phoneNumber}}</p>
+  </div>
+</div>

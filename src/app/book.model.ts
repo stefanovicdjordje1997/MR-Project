@@ -4,7 +4,6 @@ export class Book {
   imageUrl: string
   userId: string
   name: string
-  //moze i autor ali da ne komplikujemo
   faculty: string
   fieldOfStudy: string
   yearOfStudy: number
