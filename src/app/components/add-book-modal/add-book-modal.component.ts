@@ -12,7 +12,7 @@ import {AuthService} from "../../auth/auth.service";
 })
 export class AddBookModalComponent implements OnInit {
   addBookForm: FormGroup
-
+  addingBook = false
   customActionSheetOptionsFaculty = {
     header: 'Fakultet',
     subHeader: 'Izaberite fakultet'
@@ -83,6 +83,7 @@ export class AddBookModalComponent implements OnInit {
 
 
   onAddBook() {
+    this.addingBook = true
     this.bookService.addBook(
       this.addBookForm.get('imageUrl').value,
       this.authService.user.id,
@@ -96,6 +97,7 @@ export class AddBookModalComponent implements OnInit {
       this.addBookForm.get('damaged').value != 'No'
     ).subscribe((id)=>{
       console.log(id)
+      this.addingBook = false
     })
     this.onCancel()
   }

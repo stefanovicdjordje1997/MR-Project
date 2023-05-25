@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Dodavanje udzbenika</ion-title>
+    <ion-progress-bar *ngIf="addingBook" type="indeterminate"></ion-progress-bar>
     <ion-buttons slot="end">
       <ion-button (click)="onCancel()">Odustanite</ion-button>
     </ion-buttons>

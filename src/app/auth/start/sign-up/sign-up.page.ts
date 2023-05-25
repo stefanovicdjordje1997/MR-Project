@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -10,6 +11,7 @@ import {AuthService} from "../../auth.service";
 })
 export class SignUpPage implements OnInit {
   signUpForm: FormGroup
+  registering = false
 
   //HEADERS AND SUBHEADERS FOR DROPDOWN MENUS
   customActionSheetOptionsDay = {
@@ -33,7 +35,7 @@ export class SignUpPage implements OnInit {
   months = Array.from({length: 12}, (_, i) => i + 1)
   years = Array.from({length: 101}, (_, i) => i + 1930)
   faculties = ["Fakultet organizacionih nauka","Elektrotehnički fakultet"]
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
 
   ngOnInit() {
     this.signUpForm = new FormGroup({
@@ -65,6 +67,7 @@ export class SignUpPage implements OnInit {
   }
 
   onRegister() {
+    this.registering = true
     this.authService.register({
       name: this.signUpForm.value.name,
       surname: this.signUpForm.value.surname,
@@ -73,7 +76,20 @@ export class SignUpPage implements OnInit {
       phoneNumber: this.signUpForm.value.phoneNumber,
       email: this.signUpForm.value.email,
       password: this.signUpForm.value.password
+    }).subscribe((user) => {
+      this.userService.addUser(
+        user.id,
+        user.name,
+        user.surname,
+        user.birthDate,
+        user.faculty,
+        user.phoneNumber,
+        user.email
+      )
+      console.log('User '+user.name+' is registered.')
+      this.registering = false
+      this.router.navigateByUrl('/main')
     })
-    this.router.navigateByUrl('/main')
+
   }
 }

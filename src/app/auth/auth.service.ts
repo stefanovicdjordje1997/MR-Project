@@ -124,17 +124,5 @@ export class AuthService {
           return newUser;
         })
       )
-      .subscribe((user) => {
-        this.userService.addUser(
-          user.id,
-          user.name,
-          user.surname,
-          user.birthDate,
-          user.faculty,
-          user.phoneNumber,
-          user.email
-        );
-        console.log(user);
-      });
   }
 }
