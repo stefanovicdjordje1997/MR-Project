@@ -1,10 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {map, tap} from 'rxjs/operators';
-import {User} from './user.model';
-import {UserService} from '../services/user.service';
-import {BehaviorSubject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { map, tap } from 'rxjs/operators';
+import { User } from './user.model';
+import { UserService } from '../services/user.service';
+import { BehaviorSubject } from 'rxjs';
+import { TokenService } from "../services/token.service";
 
 interface AuthResponse {
   idToken: string;
@@ -29,16 +30,16 @@ interface UserData {
 })
 export class AuthService {
   private _isUserAuthenticated = false;
-  private _user = new BehaviorSubject<User>(null);
+  public _user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient, private userService: UserService) {
+  constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService) {
   }
 
   get isUserAuthenticated() {
     return this._user.asObservable().pipe(map((user) => {
-      if(user){
+      if (user) {
         return !!this.user.token
-      }else{
+      } else {
         return false
       }
     }))
@@ -48,7 +49,12 @@ export class AuthService {
     return this._user.value;
   }
 
+  get token() {
+    return this.tokenService.token;
+  }
+
   logIn(user: UserData) {
+    this._isUserAuthenticated = true;
     return this.http
       .post<AuthResponse>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.APIKey}`,
@@ -60,30 +66,18 @@ export class AuthService {
       )
       .pipe(
         tap((userData) => {
-          this.userService.getUsers().subscribe((users) => {
-            this._user.next(
-              users.find((u) => u.id === userData.localId)
-            );
-            const expirationTime = new Date(
-              new Date().getTime() + +userData.expiresIn * 1000
-            );
-            if (this.user) {
-              const newUser = new User(
-                this.user.id,
-                userData.idToken,
-                expirationTime,
-                this.user.name,
-                this.user.surname,
-                this.user.birthDate,
-                this.user.faculty,
-                this.user.phoneNumber,
-                this.user.email
-              );
-              this._user.next(newUser);
-            }
-            console.log(this.user?.name + ' logged in.');
-            this._isUserAuthenticated = true
-          });
+          const expirationTime = new Date(
+            new Date().getTime() + +userData.expiresIn * 1000
+          );
+          this.tokenService.setToken(userData.idToken);
+          const loggedInUser = new User(
+            userData.localId,
+            userData.idToken,
+            expirationTime
+          );
+          this._user.next(loggedInUser);
+          this.completeUserData(); // Complete user data here
+          console.log(this.user?.id + ' logged in.');
         })
       );
   }
@@ -108,7 +102,8 @@ export class AuthService {
         map((userData) => {
           const expirationTime = new Date(
             new Date().getTime() + +userData.expiresIn * 1000
-          );
+          )
+          this.tokenService.setToken(userData.idToken);
           const newUser = new User(
             userData.localId,
             userData.idToken,
@@ -125,4 +120,27 @@ export class AuthService {
         })
       )
   }
+
+  completeUserData() {
+    if (this._user.value && this._user.value.id) {
+      const userId = this._user.value.id;
+      this.userService.getUsers().subscribe((users) => {
+        const userFromDb = users.find((user) => user.id === userId);
+        if (userFromDb) {
+          const updatedUser: User = {
+            ...this._user.value,
+            token: this._user.value.token,
+            name: userFromDb.name || this._user.value.name,
+            surname: userFromDb.surname || this._user.value.surname,
+            birthDate: userFromDb.birthDate || this._user.value.birthDate,
+            faculty: userFromDb.faculty || this._user.value.faculty,
+            phoneNumber: userFromDb.phoneNumber || this._user.value.phoneNumber,
+            email: userFromDb.email || this._user.value.email,
+          };
+          this._user.next(updatedUser);
+        }
+      });
+    }
+  }
+
 }

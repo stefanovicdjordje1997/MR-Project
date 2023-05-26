@@ -43,8 +43,4 @@ export class BookComponent implements OnInit {
     });
     return await popover.present();
   }
-
-  showUserInfo() {
-    this.presentPopover()
-  }
 }

@@ -88,7 +88,7 @@ export class SignUpPage implements OnInit {
       )
       console.log('User '+user.name+' is registered.')
       this.registering = false
-      this.router.navigateByUrl('/main')
+      this.router.navigateByUrl('/home')
     })
 
   }

@@ -3,12 +3,12 @@ export class User {
     public id: string,
     public _token: string,
     public tokenExpirationDate: Date,
-    public name: string,
-    public surname: string,
-    public birthDate: Date,
-    public faculty: string,
-    public phoneNumber: string,
-    public email: string
+    public name: string = null,
+    public surname: string = null,
+    public birthDate: Date = null,
+    public faculty: string = null,
+    public phoneNumber: string = null,
+    public email: string = null
   ) {
   }
   get token() {

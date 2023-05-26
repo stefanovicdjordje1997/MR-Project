@@ -25,7 +25,7 @@ export class LogInPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.userService.getUsers().subscribe()
+    //this.userService.getUsers().subscribe()
   }
 
   onLogin() {
@@ -39,7 +39,6 @@ export class LogInPage implements OnInit {
           },
           error: async () => {
             let message = 'Email ili lozinka neispravni.';
-
             const alert = await this.alertCtrl.create(
               {
                 header: 'Greška!',
@@ -49,6 +48,7 @@ export class LogInPage implements OnInit {
             );
             await alert.present();
             this.logInForm.reset();
+            this.loggingIn = false
           }
         }
       )
