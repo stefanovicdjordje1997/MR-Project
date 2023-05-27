@@ -14,9 +14,9 @@ export class HomePage implements OnInit {
   private subscription: Subscription
 
 
-  async showToast(bookName: string) {
+  async showToast(event) {
     const toast = await this.toastController.create({
-      message: `Udzbenik ${bookName} dodat u omiljeno`,
+      message: !event.favorite?`Udzbenik ${event.bookName} uklonjen iz omiljenog`:`Udzbenik ${event.bookName} dodat u omiljeno`,
       duration: 3000
     });
     await toast.present();

@@ -54,7 +54,6 @@ export class MyBooksPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    //this.bookService.getBooks().subscribe();
     this.subscription = this.bookService.books.subscribe((books) => {
       const userId = this.authService.user ? this.authService.user.id : null;
       if (userId) {

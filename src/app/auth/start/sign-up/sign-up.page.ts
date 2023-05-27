@@ -33,7 +33,7 @@ export class SignUpPage implements OnInit {
   //ARRAYS WITH THE VALUES FOR DROPDOWN MENUS
   days = Array.from({length: 31}, (_, i) => i + 1)
   months = Array.from({length: 12}, (_, i) => i + 1)
-  years = Array.from({length: 101}, (_, i) => i + 1930)
+  years = Array.from({length: 101}, (_, i) => new Date().getFullYear() - i)
   faculties = ["Fakultet organizacionih nauka","Elektrotehnički fakultet"]
   constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
 
@@ -78,7 +78,6 @@ export class SignUpPage implements OnInit {
       password: this.signUpForm.value.password
     }).subscribe((user) => {
       this.userService.addUser(
-        user.id,
         user.name,
         user.surname,
         user.birthDate,
@@ -88,7 +87,7 @@ export class SignUpPage implements OnInit {
       )
       console.log('User '+user.name+' is registered.')
       this.registering = false
-      this.router.navigateByUrl('/home')
+      this.router.navigateByUrl('/log-in')
     })
 
   }

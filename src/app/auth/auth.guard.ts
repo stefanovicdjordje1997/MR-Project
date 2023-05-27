@@ -9,10 +9,7 @@ export const authGuard = () => {
 
   return authService.isUserAuthenticated.pipe(take(1), tap((isAuthenticated) => {
     if (!isAuthenticated) {
-      console.log('User is authenticated.')
       router.navigateByUrl('/log-in');
-    } else {
-      console.log('User is not authenticated.')
     }
   }))
 }

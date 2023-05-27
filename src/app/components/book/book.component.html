@@ -1,5 +1,6 @@
 <ion-card>
-  <img alt="Greška pri učitavanju fotografije" [src]="book.imageUrl" (error)="book.imageUrl='https://drive.google.com/uc?id=1MDbzggTZ4uik1X5Wsukaaek_3kv-hWAb&export=download'" />
+  <img alt="Greška pri učitavanju fotografije" [src]="book.imageUrl"
+       (error)="book.imageUrl='https://drive.google.com/uc?id=1MDbzggTZ4uik1X5Wsukaaek_3kv-hWAb&export=download'"/>
 
   <ion-item lines="none">
     <ion-icon name="person-circle-outline" size="large"></ion-icon>
@@ -25,8 +26,9 @@
         </ion-col>
         <ion-col>
           <ion-buttons class="ion-justify-content-end">
-            <ion-button fill="clear" size="large" *ngIf="!expand" (click)="addToFavoritesClicked()">
-              <ion-icon name="star-outline"></ion-icon>
+            <ion-button fill="clear" size="large" *ngIf="!expand && showFavoritesButton"
+                        (click)="addToFavoritesClicked()">
+              <ion-icon [name]="favorite ? 'star' : 'star-outline'"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-col>
@@ -35,13 +37,21 @@
 
     <!-- MORE INFO ABOUT THE BOOK WHEN THE CARD IS EXPANDED -->
     <div *ngIf="expand">
-      <p style="margin-top: 15px"><ion-label *ngIf="book.used"><b>Polovno</b></ion-label></p>
-      <p style="margin-top: 15px"><ion-label *ngIf="!book.used"><b>Novo</b></ion-label></p>
+      <p style="margin-top: 15px">
+        <ion-label *ngIf="book.used"><b>Polovno</b></ion-label>
+      </p>
+      <p style="margin-top: 15px">
+        <ion-label *ngIf="!book.used"><b>Novo</b></ion-label>
+      </p>
       <p style="margin-top: 15px"><b>Fakultet: </b> {{book.faculty}}</p>
       <p style="margin-top: 15px"><b>Smer: </b> {{book.fieldOfStudy}}</p>
       <p style="margin-top: 15px"><b>Godina izdanja: </b> {{book.publicationYear}}</p>
-      <p style="margin-top: 15px"><ion-label *ngIf="book.damaged"><b>Oštećen: </b>De</ion-label></p>
-      <p style="margin-top: 15px"><ion-label *ngIf="!book.damaged"><b>Oštećen: </b>Ne</ion-label></p>
+      <p style="margin-top: 15px">
+        <ion-label *ngIf="book.damaged"><b>Oštećen: </b>De</ion-label>
+      </p>
+      <p style="margin-top: 15px">
+        <ion-label *ngIf="!book.damaged"><b>Oštećen: </b>Ne</ion-label>
+      </p>
       <ion-grid>
         <ion-row>
           <ion-col></ion-col>
@@ -54,7 +64,8 @@
           </ion-col>
           <ion-col>
             <ion-buttons class="ion-justify-content-end">
-              <ion-button fill="clear" size="large" *ngIf="expand" (click)="addToFavoritesClicked()">
+              <ion-button fill="clear" size="large" *ngIf="expand && showFavoritesButton"
+                          (click)="addToFavoritesClicked()">
                 <ion-icon name="star-outline"></ion-icon>
               </ion-button>
             </ion-buttons>

@@ -8,5 +8,13 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <app-book *ngFor="let book of books" [book]="book" (addToFavorites)="showToast($event)"></app-book>
+  </ion-list>
 
+  <ion-item *ngIf="books.length<=0" lines="none">
+    <ion-label class="ion-text-center" style="margin-top: 300px; font-size: x-large">
+      Nema omiljenih udžbenika
+    </ion-label>
+  </ion-item>
 </ion-content>

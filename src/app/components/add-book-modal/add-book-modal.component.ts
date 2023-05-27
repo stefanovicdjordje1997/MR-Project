@@ -33,7 +33,7 @@ export class AddBookModalComponent implements OnInit {
   }
 
   faculties = ['Fakultet organizacionih nauka', 'Elektrotehnički fakultet', 'Mašinski fakultet']
-  publicationYears = Array.from({length: 101}, (_, i) => i + 1930)
+  publicationYears = Array.from({length: 101}, (_, i) => new Date().getFullYear() - i)
   fieldOfStudyByFaculty: { [faculty: string]: string[] } = {
     'Fakultet organizacionih nauka': ['Informacioni sistemi i tehnologije', 'Menadzment', 'Operacioni menadžment', 'Menadžment kvaliteta i standardizacija'],
     'Elektrotehnički fakultet': ['Smer 1', 'Smer 2'],

@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { map, tap } from 'rxjs/operators';
-import { User } from './user.model';
-import { UserService } from '../services/user.service';
-import { BehaviorSubject } from 'rxjs';
-import { TokenService } from "../services/token.service";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {map, tap} from 'rxjs/operators';
+import {User} from './user.model';
+import {UserService} from '../services/user.service';
+import {BehaviorSubject} from 'rxjs';
+import {TokenService} from "../services/token.service";
 
 interface AuthResponse {
   idToken: string;
@@ -73,11 +73,11 @@ export class AuthService {
           const loggedInUser = new User(
             userData.localId,
             userData.idToken,
-            expirationTime
+            expirationTime,
+            userData.email
           );
-          this._user.next(loggedInUser);
-          this.completeUserData(); // Complete user data here
-          console.log(this.user?.id + ' logged in.');
+          this._user.next(loggedInUser)
+          this.completeUserData()
         })
       );
   }
@@ -103,17 +103,18 @@ export class AuthService {
           const expirationTime = new Date(
             new Date().getTime() + +userData.expiresIn * 1000
           )
+          console.log(userData)
           this.tokenService.setToken(userData.idToken);
           const newUser = new User(
             userData.localId,
             userData.idToken,
             expirationTime,
+            userData.email,
             user.name,
             user.surname,
             user.birthDate,
             user.faculty,
-            user.phoneNumber,
-            userData.email
+            user.phoneNumber
           );
           this._user.next(newUser);
           return newUser;
@@ -122,21 +123,23 @@ export class AuthService {
   }
 
   completeUserData() {
-    if (this._user.value && this._user.value.id) {
-      const userId = this._user.value.id;
+    if (this.user && this.user.id) {
+      const userEmail = this.user.email;
       this.userService.getUsers().subscribe((users) => {
-        const userFromDb = users.find((user) => user.id === userId);
+        const userFromDb = users.find((user) => user.email === userEmail);
         if (userFromDb) {
-          const updatedUser: User = {
-            ...this._user.value,
-            token: this._user.value.token,
-            name: userFromDb.name || this._user.value.name,
-            surname: userFromDb.surname || this._user.value.surname,
-            birthDate: userFromDb.birthDate || this._user.value.birthDate,
-            faculty: userFromDb.faculty || this._user.value.faculty,
-            phoneNumber: userFromDb.phoneNumber || this._user.value.phoneNumber,
-            email: userFromDb.email || this._user.value.email,
-          };
+          const updatedUser = new User(
+            userFromDb.id,
+            this.user.token,
+            this.user.tokenExpirationDate,
+            userFromDb.email,
+            userFromDb.name,
+            userFromDb.surname,
+            userFromDb.birthDate,
+            userFromDb.faculty,
+            userFromDb.phoneNumber,
+            userFromDb.favoriteBooks
+          )
           this._user.next(updatedUser);
         }
       });
