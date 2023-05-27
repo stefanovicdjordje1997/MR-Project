@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import {ActionSheetController, ModalController, ToastController} from '@ionic/angular';
 import { AddBookModalComponent } from '../../../components/add-book-modal/add-book-modal.component';
 import { AuthService } from '../../../auth/auth.service';
 import { Book } from '../../../book.model';
@@ -19,7 +19,8 @@ export class MyBooksPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
     private authService: AuthService,
-    private bookService: BooksService
+    private bookService: BooksService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {}
@@ -64,12 +65,20 @@ export class MyBooksPage implements OnInit, OnDestroy {
           }
         }
       }
-    });
+    })
   }
 
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  async showToast(event) {
+    const toast = await this.toastCtrl.create({
+      message: `Udzbenik ${event} je izbrisan`,
+      duration: 3000
+    });
+    await toast.present();
   }
 }

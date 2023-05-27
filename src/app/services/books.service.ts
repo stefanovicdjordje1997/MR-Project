@@ -10,17 +10,17 @@ import {AuthService} from "../auth/auth.service";
   providedIn: 'root'
 })
 export class BooksService {
-  private _books = new BehaviorSubject<Book[]>([]);
+  private _books = new BehaviorSubject<Book[]>([])
   token: string;
 
   constructor(private http: HttpClient, private tokenService: TokenService, private authService: AuthService) {
     this.tokenService.token.subscribe((token) => {
       this.token = token;
-    });
+    })
   }
 
   get books() {
-    return this._books.asObservable();
+    return this._books.asObservable()
   }
 
   addBook(
@@ -158,5 +158,50 @@ export class BooksService {
         })
       );
   }
+
+  editBook(
+    bookId: string,
+    userId: string,
+    imageUrl: string,
+    name: string,
+    faculty: string,
+    fieldOfStudy: string,
+    yearOfStudy: number,
+    publicationYear: number,
+    price: number,
+    used: boolean,
+    damaged: boolean
+  ) {
+    const updatedBook: Book = {
+      id: bookId,
+      userId,
+      imageUrl,
+      name,
+      faculty,
+      fieldOfStudy,
+      yearOfStudy,
+      publicationYear,
+      price,
+      used,
+      damaged
+    };
+
+    return this.http
+      .put<Book>(
+        `https://book-app-db-default-rtdb.europe-west1.firebasedatabase.app/books/${bookId}.json?auth=${this.token}`,
+        updatedBook
+      )
+      .pipe(
+        switchMap(() => this.books),
+        take(1),
+        tap((books) => {
+          const updatedBooks = books.map((book) =>
+            book.id === bookId ? updatedBook : book
+          );
+          this._books.next(updatedBooks);
+        })
+      );
+  }
+
 
 }

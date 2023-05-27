@@ -15,17 +15,17 @@ export class HomePage implements OnInit {
 
 
   async showToast(event) {
-    const toast = await this.toastController.create({
+    const toast = await this.toastCtrl.create({
       message: !event.favorite?`Udzbenik ${event.bookName} uklonjen iz omiljenog`:`Udzbenik ${event.bookName} dodat u omiljeno`,
       duration: 3000
     });
     await toast.present();
   }
-  constructor(private bookService: BooksService,private toastController: ToastController) {
+  constructor(private bookService: BooksService,private toastCtrl: ToastController) {
   }
 
   ngOnInit() {
-    this.bookService.books.subscribe((books) => {
+    this.subscription = this.bookService.books.subscribe((books) => {
       this.books = books
     })
   }

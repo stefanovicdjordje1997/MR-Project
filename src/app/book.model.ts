@@ -22,7 +22,8 @@ export class Book {
     publicationYear: number,
     price: number,
     used: boolean,
-    damaged: boolean
+    damaged: boolean,
+    userId: string
   ) {
     this.id = id;
     this.imageUrl = imageUrl;
@@ -34,6 +35,7 @@ export class Book {
     this.price = price;
     this.used = used;
     this.damaged = damaged;
+    this.userId = userId
   }
 }
 
