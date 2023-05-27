@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Dodavanje udzbenika</ion-title>
+    <ion-title>{{ isEditing ? 'Izmena udžbenika' : 'Dodaj udžbenik' }}</ion-title>
     <ion-progress-bar *ngIf="addingBook" type="indeterminate"></ion-progress-bar>
     <ion-buttons slot="end">
       <ion-button (click)="onCancel()">Odustanite</ion-button>
@@ -157,7 +157,7 @@
       <ion-row style="margin-top: 10px">
         <ion-col size-sm="6" offset-sm="3">
           <ion-button type="submit" fill="solid" expand="block" [disabled]="addBookForm.invalid">
-            Dodaj udžbenik
+            {{ isEditing ? 'Sačuvaj' : 'Dodaj' }}
           </ion-button>
         </ion-col>
       </ion-row>

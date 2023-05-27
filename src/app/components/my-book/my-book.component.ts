@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Book} from "../../book.model";
+import {ModalController} from "@ionic/angular";
+import {AddBookModalComponent} from "../add-book-modal/add-book-modal.component";
 
 @Component({
   selector: 'app-my-book',
@@ -13,15 +15,22 @@ export class MyBookComponent  implements OnInit {
 
   expand = false
 
-  constructor() {
+  constructor(private modalCtrl: ModalController) {
   }
 
   ngOnInit() {
   }
 
-  onEdit() {
-
+  async openEditForm() {
+    const modal = await this.modalCtrl.create({
+      component: AddBookModalComponent,
+      componentProps: {
+        book: this.book
+      }
+    });
+    await modal.present();
   }
+
 
   onDelete() {
     this.deletedBook.emit(this.book.name)

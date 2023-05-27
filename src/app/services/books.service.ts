@@ -197,7 +197,7 @@ export class BooksService {
         tap((books) => {
           const updatedBooks = books.map((book) =>
             book.id === bookId ? updatedBook : book
-          );
+          )
           this._books.next(updatedBooks);
         })
       );
