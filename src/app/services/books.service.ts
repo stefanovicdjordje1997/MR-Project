@@ -144,16 +144,31 @@ export class BooksService {
 
   removeFromFavorites(user: User, book: Book) {
     console.log('Remove from favorites method called.');
-    const updatedUser: User = {
-      ...user,
-      favoriteBooks: user.favoriteBooks.filter((favoriteBook) => favoriteBook.id !== book.id),
-      token: user.token
+    const updatedUser = {
+      name: user.name,
+      surname: user.surname,
+      birthDate: user.birthDate,
+      faculty: user.faculty,
+      phoneNumber: user.phoneNumber,
+      email: user.email,
+      favoriteBooks: user.favoriteBooks.filter((favoriteBook) => favoriteBook.id !== book.id)
     };
     console.log(updatedUser);
     return this.http.put<User>(`https://book-app-db-default-rtdb.europe-west1.firebasedatabase.app/users/${user.id}.json?auth=${this.token}`, updatedUser)
       .pipe(
         tap((updatedUser) => {
-          this.authService._user.next(updatedUser);
+          this.authService._user.next(new User(
+            user.id,
+            user._token,
+            user.tokenExpirationDate,
+            updatedUser.email,
+            updatedUser.name,
+            updatedUser.surname,
+            updatedUser.birthDate,
+            updatedUser.faculty,
+            updatedUser.phoneNumber,
+            updatedUser.favoriteBooks
+          ))
           console.log(`Book '${book.name}' removed from favorites for user '${user.name}'.`);
         })
       );
@@ -203,5 +218,19 @@ export class BooksService {
       );
   }
 
+  deleteBook(bookId: string) {
+    return this.http
+      .delete(
+        `https://book-app-db-default-rtdb.europe-west1.firebasedatabase.app/books/${bookId}.json?auth=${this.token}`
+      )
+      .pipe(
+        switchMap(() => this.books),
+        take(1),
+        tap((books) => {
+          const updatedBooks = books.filter((book) => book.id !== bookId);
+          this._books.next(updatedBooks);
+        })
+      );
+  }
 
 }
