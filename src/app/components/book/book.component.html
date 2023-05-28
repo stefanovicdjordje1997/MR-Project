@@ -2,7 +2,7 @@
   <img alt="Greška pri učitavanju fotografije" [src]="book.imageUrl"
        (error)="book.imageUrl='https://drive.google.com/uc?id=1MDbzggTZ4uik1X5Wsukaaek_3kv-hWAb&export=download'"/>
 
-  <ion-item lines="none">
+  <ion-item lines="none" *ngIf="!isBookMine">
     <ion-icon name="person-circle-outline" size="large"></ion-icon>
     <ion-label style="font-size: large" (click)="presentPopover()">{{user?.name}}</ion-label>
   </ion-item>
@@ -26,7 +26,7 @@
         </ion-col>
         <ion-col>
           <ion-buttons class="ion-justify-content-end">
-            <ion-button fill="clear" size="large" *ngIf="!expand && showFavoritesButton"
+            <ion-button fill="clear" size="large" *ngIf="!expand && !isBookMine"
                         (click)="addToFavoritesClicked()">
               <ion-icon [name]="favorite ? 'star' : 'star-outline'"></ion-icon>
             </ion-button>
@@ -64,7 +64,7 @@
           </ion-col>
           <ion-col>
             <ion-buttons class="ion-justify-content-end">
-              <ion-button fill="clear" size="large" *ngIf="expand && showFavoritesButton"
+              <ion-button fill="clear" size="large" *ngIf="expand && !isBookMine"
                           (click)="addToFavoritesClicked()">
                 <ion-icon [name]="favorite ? 'star' : 'star-outline'"></ion-icon>
               </ion-button>

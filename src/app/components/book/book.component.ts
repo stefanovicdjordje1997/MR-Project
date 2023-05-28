@@ -19,7 +19,7 @@ export class BookComponent implements OnInit {
   users: User[] = [];
   user: User
   expand = false;
-  showFavoritesButton = true
+  isBookMine = false
   favorite = false
 
   constructor(private userService: UserService, private popoverController: PopoverController, private bookService: BooksService, private authService: AuthService) {
@@ -30,7 +30,7 @@ export class BookComponent implements OnInit {
       this.users = users
       this.user = this.users.find((u) => u.id === this.book.userId)
       if(this.authService.user.id === this.user.id){
-        this.showFavoritesButton = false
+        this.isBookMine = true
       }
       if(this.authService.user.favoriteBooks != undefined){
         this.favorite = !!this.authService.user.favoriteBooks.find((book) => book.id === this.book.id)

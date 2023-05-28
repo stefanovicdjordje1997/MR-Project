@@ -143,7 +143,6 @@ export class BooksService {
   }
 
   removeFromFavorites(user: User, book: Book) {
-    console.log('Remove from favorites method called.');
     const updatedUser = {
       name: user.name,
       surname: user.surname,
@@ -153,7 +152,6 @@ export class BooksService {
       email: user.email,
       favoriteBooks: user.favoriteBooks.filter((favoriteBook) => favoriteBook.id !== book.id)
     };
-    console.log(updatedUser);
     return this.http.put<User>(`https://book-app-db-default-rtdb.europe-west1.firebasedatabase.app/users/${user.id}.json?auth=${this.token}`, updatedUser)
       .pipe(
         tap((updatedUser) => {

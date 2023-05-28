@@ -49,7 +49,6 @@ export class FavoritesPage implements OnInit {
 
   getFavoriteBooks() {
     this.subscription = this.bookService.books.subscribe((books) => {
-      console.log('Number of books: '+books.length)
       for (const favBookId in this.authService.user.favoriteBooks) {
         if(books.find((b) => b.id === this.authService.user.favoriteBooks[favBookId].id)){
           this.books.push(this.authService.user.favoriteBooks[favBookId]);

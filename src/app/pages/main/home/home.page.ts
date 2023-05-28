@@ -11,6 +11,7 @@ import {ToastController} from "@ionic/angular";
 })
 export class HomePage implements OnInit {
   books: Book[]
+  filteredBooks: Book[];
   private subscription: Subscription
 
 
@@ -27,6 +28,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.subscription = this.bookService.books.subscribe((books) => {
       this.books = books
+      this.filteredBooks = [...books]
     })
   }
 
@@ -39,4 +41,11 @@ export class HomePage implements OnInit {
       this.subscription.unsubscribe()
     }
   }
+
+  searchBooks(event) {
+    const searchTerm = event.target.value.toLowerCase()
+    console.log(searchTerm)
+    this.filteredBooks = this.books.filter((book)=>book.name.toLowerCase().indexOf(searchTerm) > -1)
+  }
+
 }
