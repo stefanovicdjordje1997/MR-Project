@@ -37,8 +37,15 @@ export class LogInPage implements OnInit {
             this.loggingIn = false
             this.router.navigateByUrl("/main");
           },
-          error: async () => {
-            let message = 'Email ili lozinka neispravni.';
+          error: async (error) => {
+            let message = 'Nalog nedostupan'
+            if(error.error.error.message==='INVALID_PASSWORD'){
+              message = 'Pogrešna lozinka'
+            }
+            if(error.error.error.message==='EMAIL_NOT_FOUND'){
+              message = 'Pogrešan email'
+            }
+
             const alert = await this.alertCtrl.create(
               {
                 header: 'Greška!',

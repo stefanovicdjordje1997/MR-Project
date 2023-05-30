@@ -67,7 +67,8 @@ export class AddBookModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isEditing = !!this.book; // Check if book object is provided for editing
+    // Check if book object is provided for editing
+    this.isEditing = !!this.book;
 
     this.addBookForm = new FormGroup({
       faculty: new FormControl(null, Validators.required),
@@ -110,8 +111,31 @@ export class AddBookModalComponent implements OnInit {
     }
   }
 
-  onCancel() {
-    this.modalCtrl.dismiss();
+  async onCancel() {
+    const canDismiss = async () => {
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: 'Da li ste sigurni?',
+        buttons: [
+          {
+            text: 'Da',
+            role: 'confirm',
+          },
+          {
+            text: 'Ne',
+            role: 'cancel',
+          },
+        ],
+      });
+
+      await actionSheet.present();
+
+      const { role } = await actionSheet.onWillDismiss();
+
+      return role === 'confirm';
+    }
+    if(await canDismiss()){
+      await this.modalCtrl.dismiss()
+    }
   }
 
   onAddBook() {
@@ -134,7 +158,7 @@ export class AddBookModalComponent implements OnInit {
       ).subscribe(() => {
         console.log(this.book.name + ' edited.');
         this.addingBook = false;
-        this.onCancel();
+        this.modalCtrl.dismiss()
       });
     } else {
       // Adding a new book
@@ -152,7 +176,7 @@ export class AddBookModalComponent implements OnInit {
       ).subscribe((id) => {
         console.log('New book added with ID:', id);
         this.addingBook = false;
-        this.onCancel();
+        this.modalCtrl.dismiss()
       });
     }
   }

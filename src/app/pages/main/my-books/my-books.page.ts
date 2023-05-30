@@ -29,27 +29,27 @@ export class MyBooksPage implements OnInit, OnDestroy {
     this.modalCtrl.create({
       component: AddBookModalComponent,
     }).then((modal) => {
-      modal.canDismiss = async () => {
-        const actionSheet = await this.actionSheetCtrl.create({
-          header: 'Da li ste sigurni?',
-          buttons: [
-            {
-              text: 'Da',
-              role: 'confirm',
-            },
-            {
-              text: 'Ne',
-              role: 'cancel',
-            },
-          ],
-        });
-
-        await actionSheet.present();
-
-        const { role } = await actionSheet.onWillDismiss();
-
-        return role === 'confirm';
-      };
+      // modal.canDismiss = async () => {
+      //   const actionSheet = await this.actionSheetCtrl.create({
+      //     header: 'Da li ste sigurni?',
+      //     buttons: [
+      //       {
+      //         text: 'Da',
+      //         role: 'confirm',
+      //       },
+      //       {
+      //         text: 'Ne',
+      //         role: 'cancel',
+      //       },
+      //     ],
+      //   });
+      //
+      //   await actionSheet.present();
+      //
+      //   const { role } = await actionSheet.onWillDismiss();
+      //
+      //   return role === 'confirm';
+      // };
       modal.present();
     });
   }
