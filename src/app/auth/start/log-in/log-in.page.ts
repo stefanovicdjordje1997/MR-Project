@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../../auth.service";
-import {Router} from "@angular/router";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../../services/user.service";
-import {AlertController} from "@ionic/angular";
+import {Component, OnInit} from '@angular/core'
+import {AuthService} from "../../auth.service"
+import {Router} from "@angular/router"
+import {FormControl, FormGroup, Validators} from "@angular/forms"
+import {UserService} from "../../../services/user.service"
+import {AlertController} from "@ionic/angular"
 
 @Component({
   selector: 'app-log-in',
@@ -24,10 +24,6 @@ export class LogInPage implements OnInit {
     })
   }
 
-  ionViewWillEnter() {
-    //this.userService.getUsers().subscribe()
-  }
-
   onLogin() {
     this.loggingIn = true
     this.authService.logIn(this.logInForm.value)
@@ -35,14 +31,14 @@ export class LogInPage implements OnInit {
         {
           next: () => {
             this.loggingIn = false
-            this.router.navigateByUrl("/main");
+            this.router.navigateByUrl("/main")
           },
           error: async (error) => {
             let message = 'Nalog nedostupan'
-            if(error.error.error.message==='INVALID_PASSWORD'){
+            if (error.error.error.message === 'INVALID_PASSWORD') {
               message = 'Pogrešna lozinka'
             }
-            if(error.error.error.message==='EMAIL_NOT_FOUND'){
+            if (error.error.error.message === 'EMAIL_NOT_FOUND') {
               message = 'Pogrešan email'
             }
 
@@ -52,9 +48,9 @@ export class LogInPage implements OnInit {
                 message,
                 buttons: ['Pokušaj ponovo']
               }
-            );
-            await alert.present();
-            this.logInForm.reset();
+            )
+            await alert.present()
+            this.logInForm.reset()
             this.loggingIn = false
           }
         }

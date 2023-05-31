@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Book} from "../../../book.model";
-import {BooksService} from "../../../services/books.service";
-import {Subscription} from "rxjs";
-import {ToastController} from "@ionic/angular";
+import {Component, OnInit} from '@angular/core'
+import {Book} from "../../../book.model"
+import {BooksService} from "../../../services/books.service"
+import {Subscription} from "rxjs"
+import {ToastController} from "@ionic/angular"
 
 @Component({
   selector: 'app-home',
@@ -11,18 +11,19 @@ import {ToastController} from "@ionic/angular";
 })
 export class HomePage implements OnInit {
   books: Book[]
-  filteredBooks: Book[];
+  filteredBooks: Book[]
   private subscription: Subscription
 
 
   async showToast(event) {
     const toast = await this.toastCtrl.create({
-      message: !event.favorite?`Udzbenik ${event.bookName} uklonjen iz omiljenog`:`Udzbenik ${event.bookName} dodat u omiljeno`,
+      message: !event.favorite ? `Udzbenik ${event.bookName} uklonjen iz omiljenog` : `Udzbenik ${event.bookName} dodat u omiljeno`,
       duration: 3000
-    });
-    await toast.present();
+    })
+    await toast.present()
   }
-  constructor(private bookService: BooksService,private toastCtrl: ToastController) {
+
+  constructor(private bookService: BooksService, private toastCtrl: ToastController) {
   }
 
   ngOnInit() {
@@ -45,7 +46,7 @@ export class HomePage implements OnInit {
   searchBooks(event) {
     const searchTerm = event.target.value.toLowerCase()
     console.log(searchTerm)
-    this.filteredBooks = this.books.filter((book)=>book.name.toLowerCase().indexOf(searchTerm) > -1)
+    this.filteredBooks = this.books.filter((book) => book.name.toLowerCase().indexOf(searchTerm) > -1)
   }
 
 }

@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {User} from "../../auth/user.model";
+import {Component, Input, OnInit} from '@angular/core'
+import {User} from "../../auth/user.model"
 
 @Component({
   selector: 'app-user-info-popover',

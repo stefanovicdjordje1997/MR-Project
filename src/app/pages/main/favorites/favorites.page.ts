@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Book} from "../../../book.model";
-import {Subscription} from "rxjs";
-import {BooksService} from "../../../services/books.service";
-import {ToastController} from "@ionic/angular";
-import {AuthService} from "../../../auth/auth.service";
+import {Component, OnInit} from '@angular/core'
+import {Book} from "../../../book.model"
+import {Subscription} from "rxjs"
+import {BooksService} from "../../../services/books.service"
+import {ToastController} from "@ionic/angular"
+import {AuthService} from "../../../auth/auth.service"
 
 @Component({
   selector: 'app-favorites',
@@ -20,8 +20,8 @@ export class FavoritesPage implements OnInit {
     const toast = await this.toastController.create({
       message: !event.favorite ? `Udzbenik ${event.bookName} uklonjen iz omiljenog` : `Udzbenik ${event.bookName} dodat u omiljeno`,
       duration: 3000
-    });
-    await toast.present();
+    })
+    await toast.present()
   }
 
   constructor(private bookService: BooksService, private toastController: ToastController, private authService: AuthService) {
@@ -33,12 +33,6 @@ export class FavoritesPage implements OnInit {
   ionViewWillEnter() {
     this.books = []
     this.getFavoriteBooks()
-    // //this.userService.getUsers().subscribe()
-    // const favoriteBooks: Book[] = this.authService.user.favoriteBooks
-    // const userId = this.authService.user ? this.authService.user.id : null;
-    // if (userId) {
-    //   this.books = favoriteBooks
-    // }
   }
 
   ionViewWillDestroy() {
@@ -50,14 +44,12 @@ export class FavoritesPage implements OnInit {
   getFavoriteBooks() {
     this.subscription = this.bookService.books.subscribe((books) => {
       for (const favBookId in this.authService.user.favoriteBooks) {
-        if(books.find((b) => b.id === this.authService.user.favoriteBooks[favBookId].id)){
-          this.books.push(this.authService.user.favoriteBooks[favBookId]);
-        }else {
-          this.bookService.removeFromFavorites(this.authService.user,this.authService.user.favoriteBooks[favBookId])
+        if (books.find((b) => b.id === this.authService.user.favoriteBooks[favBookId].id)) {
+          this.books.push(this.authService.user.favoriteBooks[favBookId])
+        } else {
+          this.bookService.removeFromFavorites(this.authService.user, this.authService.user.favoriteBooks[favBookId]).subscribe()
         }
       }
     })
-
   }
-
 }

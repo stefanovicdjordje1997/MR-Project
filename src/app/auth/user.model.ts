@@ -1,4 +1,4 @@
-import { Book } from "../book.model";
+import { Book } from "../book.model"
 
 export class User {
   constructor(
@@ -16,8 +16,8 @@ export class User {
 
   get token() {
     if (!this.tokenExpirationDate || this.tokenExpirationDate <= new Date()) {
-      return null;
+      return null
     }
-    return this._token;
+    return this._token
   }
 }

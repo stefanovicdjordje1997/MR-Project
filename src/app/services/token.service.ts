@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {Injectable} from '@angular/core'
+import {BehaviorSubject} from "rxjs"
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
-  private _token = new BehaviorSubject<string>(null);
+  private _token = new BehaviorSubject<string>(null)
 
-  constructor() { }
+  constructor() {
+  }
 
   get token() {
-    return this._token.asObservable();
+    return this._token.asObservable()
   }
 
   setToken(token: string) {
-    this._token.next(token);
+    this._token.next(token)
   }
 }

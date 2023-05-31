@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BooksService } from '../../services/books.service';
-import { AuthService } from '../../auth/auth.service';
-import { Book } from '../../book.model';
+import { Component, Input, OnInit } from '@angular/core'
+import { ActionSheetController, ModalController } from '@ionic/angular'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { BooksService } from '../../services/books.service'
+import { AuthService } from '../../auth/auth.service'
+import { Book } from '../../book.model'
 
 @Component({
   selector: 'app-add-book-modal',
@@ -11,38 +11,38 @@ import { Book } from '../../book.model';
   styleUrls: ['./add-book-modal.component.scss'],
 })
 export class AddBookModalComponent implements OnInit {
-  @Input() book: Book;
-  addBookForm: FormGroup;
-  addingBook = false;
-  isEditing = false;
+  @Input() book: Book
+  addBookForm: FormGroup
+  addingBook = false
+  isEditing = false
   customActionSheetOptionsFaculty = {
     header: 'Fakultet',
     subHeader: 'Izaberite fakultet',
-  };
+  }
 
   customActionSheetOptionsFieldOfStudy = {
     header: 'Smer',
     subHeader: 'Izaberite smer',
-  };
+  }
 
   customActionSheetOptionsYearOfStudy = {
     header: 'Godina studija',
     subHeader: 'Izaberite godinu studija',
-  };
+  }
   customActionSheetOptionsPublicationYear = {
     header: 'Godina izdanja',
     subHeader: 'Izaberite godinu izdanja',
-  };
+  }
 
   faculties = [
     'Fakultet organizacionih nauka',
     'Elektrotehnički fakultet',
     'Mašinski fakultet',
-  ];
+  ]
   publicationYears = Array.from(
     { length: 101 },
     (_, i) => new Date().getFullYear() - i
-  );
+  )
   fieldOfStudyByFaculty: { [faculty: string]: string[] } = {
     'Fakultet organizacionih nauka': [
       'Informacioni sistemi i tehnologije',
@@ -52,12 +52,12 @@ export class AddBookModalComponent implements OnInit {
     ],
     'Elektrotehnički fakultet': ['Smer 1', 'Smer 2'],
     'Mašinski fakultet': ['Smer 1', 'Smer 2', 'Smer 3'],
-  };
+  }
   yearsOfStudyByFaculty: { [faculty: string]: string[] } = {
     'Fakultet organizacionih nauka': ['1', '2', '3', '4'],
     'Elektrotehnički fakultet': ['1', '2', '3', '4'],
     'Mašinski fakultet': ['1', '2', '3', '4', '5'],
-  };
+  }
 
   constructor(
     private modalCtrl: ModalController,
@@ -67,8 +67,8 @@ export class AddBookModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Check if book object is provided for editing
-    this.isEditing = !!this.book;
+    //CHECK IF BOOK OBJECT IS PROVIDED FOR EDITING
+    this.isEditing = !!this.book
 
     this.addBookForm = new FormGroup({
       faculty: new FormControl(null, Validators.required),
@@ -80,23 +80,23 @@ export class AddBookModalComponent implements OnInit {
       used: new FormControl('', Validators.required),
       damaged: new FormControl('', Validators.required),
       imageUrl: new FormControl(''),
-    });
+    })
 
     this.addBookForm.get('faculty').valueChanges.subscribe(() => {
-      this.addBookForm.get('fieldOfStudy').enable();
-      this.addBookForm.get('yearOfStudy').enable();
-    });
+      this.addBookForm.get('fieldOfStudy').enable()
+      this.addBookForm.get('yearOfStudy').enable()
+    })
 
     this.addBookForm.get('used').valueChanges.subscribe((value: string) => {
       if (value === 'No') {
-        this.addBookForm.get('damaged').setValue('No');
+        this.addBookForm.get('damaged').setValue('No')
       } else {
-        this.addBookForm.get('damaged').setValue('');
+        this.addBookForm.get('damaged').setValue('')
       }
-    });
+    })
 
     if (this.isEditing) {
-      // Set the initial form values based on the provided book object for editing
+      //SET THE INITIAL FORM VALUES BASED ON THE PROVIDED BOOK OBJECT FOR EDITING
       this.addBookForm.patchValue({
         faculty: this.book.faculty,
         fieldOfStudy: this.book.fieldOfStudy,
@@ -107,7 +107,7 @@ export class AddBookModalComponent implements OnInit {
         used: this.book.used ? 'Yes' : 'No',
         damaged: this.book.damaged ? 'Yes' : 'No',
         imageUrl: this.book.imageUrl,
-      });
+      })
     }
   }
 
@@ -125,13 +125,13 @@ export class AddBookModalComponent implements OnInit {
             role: 'cancel',
           },
         ],
-      });
+      })
 
-      await actionSheet.present();
+      await actionSheet.present()
 
-      const { role } = await actionSheet.onWillDismiss();
+      const { role } = await actionSheet.onWillDismiss()
 
-      return role === 'confirm';
+      return role === 'confirm'
     }
     if(await canDismiss()){
       await this.modalCtrl.dismiss()
@@ -139,7 +139,7 @@ export class AddBookModalComponent implements OnInit {
   }
 
   onAddBook() {
-    this.addingBook = true;
+    this.addingBook = true
 
     if (this.isEditing) {
       // Editing an existing book
@@ -156,12 +156,12 @@ export class AddBookModalComponent implements OnInit {
         this.addBookForm.get('used').value != 'No',
         this.addBookForm.get('damaged').value != 'No'
       ).subscribe(() => {
-        console.log(this.book.name + ' edited.');
-        this.addingBook = false;
+        console.log(this.book.name + ' edited.')
+        this.addingBook = false
         this.modalCtrl.dismiss()
-      });
+      })
     } else {
-      // Adding a new book
+      //ADDING A NEW BOOK
       this.bookService.addBook(
         this.addBookForm.get('imageUrl').value,
         this.authService.user.id,
@@ -174,10 +174,10 @@ export class AddBookModalComponent implements OnInit {
         this.addBookForm.get('used').value != 'No',
         this.addBookForm.get('damaged').value != 'No'
       ).subscribe((id) => {
-        console.log('New book added with ID:', id);
-        this.addingBook = false;
+        console.log('New book added with ID:', id)
+        this.addingBook = false
         this.modalCtrl.dismiss()
-      });
+      })
     }
   }
 }

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {AuthService} from "../../auth.service";
-import {UserService} from "../../../services/user.service";
-import {AlertController} from "@ionic/angular";
+import { Component, OnInit } from '@angular/core'
+import {FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms"
+import {Router} from "@angular/router"
+import {AuthService} from "../../auth.service"
+import {UserService} from "../../../services/user.service"
+import {AlertController} from "@ionic/angular"
 
 @Component({
   selector: 'app-sign-up',
@@ -68,7 +68,7 @@ export class SignUpPage implements OnInit {
   }
 
   onRegister() {
-    this.registering = true;
+    this.registering = true
     this.authService.register({
       name: this.signUpForm.value.name,
       surname: this.signUpForm.value.surname,
@@ -86,28 +86,28 @@ export class SignUpPage implements OnInit {
           user.faculty,
           user.phoneNumber,
           user.email
-        );
-        console.log('User ' + user.name + ' is registered.');
-        this.registering = false;
-        this.router.navigateByUrl('/log-in');
+        )
+        console.log('User ' + user.name + ' is registered.')
+        this.registering = false
+        this.router.navigateByUrl('/log-in')
       },
       error: async (error) => {
-        let message = 'Registracija nije uspela';
+        let message = 'Registracija nije uspela'
 
         if (error.error.error.message === 'EMAIL_EXISTS') {
-          message = 'Email adresa već postoji';
+          message = 'Email adresa već postoji'
         }
 
         const alert = await this.alertCtrl.create({
           header: 'Greška!',
           message,
           buttons: ['Pokušaj ponovo']
-        });
+        })
 
-        await alert.present();
-        this.signUpForm.reset();
-        this.registering = false;
+        await alert.present()
+        this.signUpForm.reset()
+        this.registering = false
       }
-    });
+    })
   }
 }

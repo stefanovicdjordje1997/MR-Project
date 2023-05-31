@@ -25,16 +25,16 @@ export class Book {
     damaged: boolean,
     userId: string
   ) {
-    this.id = id;
-    this.imageUrl = imageUrl;
-    this.name = name;
-    this.faculty = faculty;
-    this.fieldOfStudy = fieldOfStudy;
-    this.yearOfStudy = yearOfStudy;
-    this.publicationYear = publicationYear;
-    this.price = price;
-    this.used = used;
-    this.damaged = damaged;
+    this.id = id
+    this.imageUrl = imageUrl
+    this.name = name
+    this.faculty = faculty
+    this.fieldOfStudy = fieldOfStudy
+    this.yearOfStudy = yearOfStudy
+    this.publicationYear = publicationYear
+    this.price = price
+    this.used = used
+    this.damaged = damaged
     this.userId = userId
   }
 }

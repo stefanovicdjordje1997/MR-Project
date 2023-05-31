@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../auth/auth.service";
+import {Component, OnInit} from '@angular/core'
+import {AuthService} from "../../auth/auth.service"
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +18,8 @@ export class ProfilePage implements OnInit {
   month = this.birthDate.getMonth() + 1
   year = this.birthDate.getFullYear()
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+  }
 
   ngOnInit() {
   }
