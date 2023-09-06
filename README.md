@@ -1,5 +1,5 @@
 # MR-Project
-Projekat iz mobilnog racunarstva - mobilna aplikacija za oglasavanje udzbenika
+Mobilna aplikacija za oglasavanje udzbenika
 
 OPIS APLIKACIJE Aplikacija je namenjena studentima koji žele da prodaju svoje polovne ili nove udžbenike.
 Na početnom ekranu se nalaze dva dugmeta gde jedno vodi ka login, a drugo ga signup (register) stranici.
